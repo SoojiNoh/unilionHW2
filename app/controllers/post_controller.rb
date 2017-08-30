@@ -1,7 +1,8 @@
 class PostController < ApplicationController
 
     before_action :set_post, only: [:show, :destroy, :edit, :update]
-
+    before_filter :authenticate_user!, only: [:create, :edit, :update, :destroy, :update, :create_comment]
+    
     def create
         puts "######################{post_params}"
         @post = current_user.posts.create(post_params)
