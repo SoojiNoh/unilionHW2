@@ -1,6 +1,6 @@
 <div style="padding: 10px;">
-    <span class="pull-right glyphicon glyphicon-edit" style="margin: 5px;"></span>
-    <span class="pull-right glyphicon glyphicon-trash" style="margin: 5px;"></span>
+    <%= link_to content_tag(:span, "", class: "pull-right glyphicon glyphicon-edit"), controller: "post", action: "edit", id: post.id, remote: true%>
+    <%= link_to content_tag(:span, "", class: "pull-right glyphicon glyphicon-trash"), post, method: :delete, data: { confirm: 'Are you sure?' }%>
 </div>
 
     <br>

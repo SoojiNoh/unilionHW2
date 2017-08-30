@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   
   get 'home/theme'
   post 'post/create'
+  get 'post/edit/:id' => 'post#edit'
+  resources :post, only: [:destroy, :update]
   post 'comment/create' => 'post#create_comment'
   get 'post/show/:id' => 'post#show'
   # The priority is based upon order of creation: first created -> highest priority.

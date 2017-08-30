@@ -1,0 +1,20 @@
+$('.modal-post-content').html(
+    "<%=escape_javascript(render 'post_edit_form', post: @post)%>" );
+
+
+    $('.edit_post').submit(function() {
+        var valuesToSubmit = $(this).serialize();
+        <!--console.log($(this));-->
+        <!--console.log(valuesToSubmit);-->
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'), //sumbits it to the given url of the form
+            data: valuesToSubmit,
+            dataType: "script" // you want a difference between normal and ajax-calls, and json is standard
+
+            <!--dataType: "JSON" // you want a difference between normal and ajax-calls, and json is standard-->
+        }).success(function(json){
+            console.log("success", json);
+        });
+        return false; // prevents normal behaviour
+    });    

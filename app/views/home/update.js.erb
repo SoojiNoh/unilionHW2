@@ -1,0 +1,4 @@
+$('.modal-title').html(
+    "<%=escape_javascript(@post.title)%>" );
+$('.modal-post-content').html(
+    "<%=escape_javascript(render 'post_content', post: @post)%>" );

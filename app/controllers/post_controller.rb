@@ -1,5 +1,7 @@
 class PostController < ApplicationController
 
+    before_action :set_post, only: [:show, :destroy, :edit, :update]
+
     def create
         puts "######################{post_params}"
         @post = current_user.posts.create(post_params)
@@ -8,13 +10,37 @@ class PostController < ApplicationController
     end
     
     def show
-        @post = Post.find(params[:id])
+        # @post = Post.find(params[:id])
         @comments = @post.comments.all
         
         respond_to do |format|
             format.js { render 'home/show.js.erb' }
         end
     end
+    
+    def edit
+        respond_to do |format|
+            format.js { render 'home/edit.js.erb' }
+        end
+    end
+    
+    def update
+        respond_to do |format|
+            if @post.update(post_params)            
+                format.js { render 'home/update.js.erb' }
+            else
+                redirect_to :back
+            end
+        end        
+    end
+    
+      def destroy
+        @post.destroy
+        respond_to do |format|
+          format.html { redirect_to :back, notice: 'Post was successfully destroyed.' }
+          format.json { head :no_content }
+        end
+      end
     
     def create_comment
         puts "###############creating_comment"
@@ -27,6 +53,10 @@ class PostController < ApplicationController
     end
     
     private
+    
+    def set_post
+        @post = Post.find(params[:id])
+    end
     
     def post_params
         params.require(:post).permit(:title, :content)

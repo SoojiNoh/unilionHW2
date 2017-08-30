@@ -1,8 +1,4 @@
-<!--$('.comment_list').html(-->
-    <!--"<%#=escape_javascript(render 'comment_list', comments: Post.find(@post_id).comments.all)%>" );-->
-alert("eheh");
-<!--console.log$('.comment_list');-->
-<!--$('.modal-comments').html("qweteqwt" );-->
+
 $('.modal-comments').html(
     "<%=escape_javascript(render 'comment_list', comments: Post.find(@post_id).comments.all)%>" );
 
