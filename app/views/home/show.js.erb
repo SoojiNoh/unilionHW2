@@ -1,0 +1,53 @@
+
+$('.modal-title').html(
+    "<%=escape_javascript(@post.title)%>" );
+    
+$('.modal-post-content').html(
+    "<%=escape_javascript(render 'post_content', post: @post)%>" );
+    
+$('.modal-comments').html(
+    "<%=escape_javascript(render 'comment_list', comments: @post.comments.all)%>" );
+ 
+    
+$('.modal-footer').html(
+    "<%=escape_javascript(render 'comment_form', comment: @post.comments.new)%>" );
+    
+    
+<!--$(document).on('click','.comment_form_button', {}, function(e){-->
+<!--    e.preventDefault();-->
+<!--    console.log($('#new_comment'));-->
+    <!--var valuesToSubmit = $(#new_comment).serialize();-->
+<!--        console.log(valuesToSubmit);-->
+        <!--$.ajax({-->
+        <!--    type: "POST",-->
+        <!--    url: $(#new_comment).attr('action'), //sumbits it to the given url of the form-->
+        <!--    data: valuesToSubmit,-->
+        <!--    dataType: "JSON" // you want a difference between normal and ajax-calls, and json is standard-->
+        <!--}).success(function(json){-->
+        <!--    console.log("success", json);-->
+        <!--});-->
+<!--});-->
+
+$( "#new_comment" ).on( "submit", function( event ) {
+  event.preventDefault();
+  <!--console.log( $( this ).serialize() );-->
+});
+    $('#new_comment').submit(function() {
+        var valuesToSubmit = $(this).serialize();
+        <!--console.log($(this));-->
+        <!--console.log(valuesToSubmit);-->
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'), //sumbits it to the given url of the form
+            data: valuesToSubmit,
+            dataType: "script" // you want a difference between normal and ajax-calls, and json is standard
+
+            <!--dataType: "JSON" // you want a difference between normal and ajax-calls, and json is standard-->
+        }).success(function(json){
+            console.log("success", json);
+        });
+        return false; // prevents normal behaviour
+    });
+
+
+    

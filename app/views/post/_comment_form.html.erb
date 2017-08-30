@@ -1,0 +1,10 @@
+            <%=form_for comment, url: url_for(action: 'create_comment'), remote: true, authenticity_token: true do |f|%>
+                <%=f.text_field :post_id, value: @post.id, hidden: true%>
+                <div style="color: black;">
+                    <%=f.text_area :content, cols: "55", rows: "1" %>
+                    <%= f.submit "Submit", class: "comment_form_button btn btn-default btn-m sr-button" %>
+                    <br>
+                </div>
+
+            <% end %>            
+        

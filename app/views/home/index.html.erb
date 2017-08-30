@@ -7,21 +7,21 @@
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">룰루랄라 반가워</a>
+                <a class="navbar-brand page-scroll" href="#page-top">FORTUNE COOKIE CAFE</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="#about">처음으로뿅</a>
+                        <a class="page-scroll" href="#counsel_post">Write</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">난누구냐궁</a>
+                        <a class="page-scroll" href="#services">List</a>
                     </li>
 
                     <li>
-                        <a class="page-scroll" href="#contact">아연락처좀</a>
+                        <a class="page-scroll" href="#contact">Contacts</a>
                     </li>
                 </ul>
             </div>
@@ -30,25 +30,48 @@
         <!-- /.container-fluid -->
     </nav>
 
-    <header style="background-image: url('https://pbs.twimg.com/profile_images/759298760925024256/YFXy9rZ5.jpg')">
+    <header style="background-image: url('https://timedotcom.files.wordpress.com/2017/02/170203_fortunecookies1.jpg?quality=85')">
         <div class="header-content">
             <div class="header-content-inner">
-                <h1 id="homeHeading">나의 홈페이지에 오신걸 환영합니다.</h1>
+                <h1 id="homeHeading">FORTUNE COOKIE CAFE </h1>
+ 
                 <hr>
-                <p>여기는 Unilion 두 번째 과제를 위한 페이지로써, <br>조금은 늦게 숙제를 제출하기는 했지만 멋쟁이 사자에 대한 진솔한 마음은<br> 누구보다도 늦지 않는 본질에 충실한 페이지 입니다.<br>그치만 흥깨서 미안해요</p>
-                <a href="#about" class="btn btn-primary btn-xl page-scroll">변명계속해봐</a>
+                <h5>TAROT RESULT</h5>
+                <p id="result_quote"><%=@quote%></p>
+                <%= link_to "Replay", {action: :random}, remote: true, class: "btn btn-default btn-xs sr-button" %>
+                <a href="#counsel_post" class="btn btn-primary btn-xl page-scroll">Need more Fortune?</a>
             </div>
         </div>
     </header>
 
-    <section class="bg-primary" id="about">
+    <section class="bg-primary" id="counsel_post">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">사실 난 널 오래 사랑해왔어</h2>
-                    <hr class="light">
-                    <p class="text-faded">사랑해 사랑한다 사랑할까 그래 사랑해요 사랑하지만 사랑해서 비록 사랑했어도 사랑할 수 있지 사랑하면서 동시에 사랑하고 또 사랑하며 사랑사랑스러워서 사랑하자</p>
-                    <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">나도사랑해</a>
+                    <% if user_signed_in? %>
+                        <h2 class="section-heading">Fortune Question?</h2>
+                        <hr class="light">
+                        <%=form_for @post, url: "post/create" do |f| %>
+                            <div style="color: black;">
+                                <%=f.label :title, "Title"%><br>
+                                <%=f.text_area :title, cols: "50", rows: "1" %>
+                                <br><br>
+                                <%=f.label :content, "Content" %><br>
+                                <%=f.text_area :content, cols: "50", rows: "5" %>
+                                <br>
+                            </div>
+                            <%= f.submit "Submit", class: "btn btn-default btn-m sr-button" %>
+                        <% end %>
+                    <% else %>
+                        <h2 class="section-heading">Login</h2>
+                        <div style="color: black;">
+                            <%= render 'users/sessions/new'%>
+                            <%= render "users/shared/links" %>
+                        </div>
+                    <% end %>
+                    <br><br>
+                    <p class="text-faded">Don't hesitate to ask for any help and care</p>
+                    <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">See Others' Questions</a>
                 </div>
             </div>
         </div>
@@ -58,41 +81,91 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2 class="section-heading">나는 말이야</h2>
+                    <h2 class="section-heading">Fortune Questions List</h2>
                     <hr class="primary">
                 </div>
             </div>
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 text-center">
+                <div class="col-lg-12 col-md-12 text-center">
                     <div class="service-box">
                         <i class="fa fa-4x fa-diamond text-primary sr-icons"></i>
-                        <h3>보석같이 아름다운 마음</h3>
-                        <p class="text-muted">사람은 역시 마음이 최고지. 마음 다음 얼굴이야 얼굴짱짱</p>
+                        <h3>Wealth</h3>
+                          <%if @posts.empty? %>
+                            <p> No Questions Yet</p>
+                          <% else %>
+                        <table id="post_table">
+                            <tr>
+                                <thead>
+                                    <th width="60%">Title</th>
+                                    <th width="20%">Timestamps</th>
+                                </thead>
+                            </tr>
+                            <tbody>
+                            <% @posts.each do |post| %>
+                            <div class="modal">
+                                  <% if @post.present? %>
+                                      <%= @post.content %>
+                                  <% end%>
+                            </div>
+                            
+                            <tr class="text-muted" data-href= "/post/show/<%=post.id%>">
+                                <td><%=post.title%></td>
+                                <td><%=post.created_at.to_date%></td>
+                            </tr>
+<script>                            
+$(document).on("click", "#post_table tr", function() {
+  var link  = $(this).data("href")
+//   alert(link);
+  $.ajax({
+    url: link,
+    type: "GET"
+  }).done(function(){
+$('#postModal').modal('show');
+    $('#postModal').on('shown', function() {
+        $("#txtname").focus();
+    });      
+  });
+});     
+
+</script>
+
+                            <!--  <%#=link_to "post/show/#{post.id}", remote: true, data: {toggle: "modal", target: "#myModal"} do %>-->
+                            <!--      <tr class="text-muted">-->
+                            <!--        <td><%#=post.title%></td>-->
+                            <!--        <td><%#=post.created_at.to_date%></td>-->
+                            <!--      </tr>-->
+                            <!--  <%# end %>-->
+                            </tbody>
+                              <!-- Modal -->
+  <div class="modal fade" id="postModal" role="dialog">
+    <div class="modal-dialog">
+    
+       Modal content
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body">
+          <br><p class="modal-post-content" style="border: 1px solid #ccc; border-radius: 16px;">asdg</p>
+          <br><p>COMMENTS</p><hr><br>
+          <p class="modal-comments"></p>
+        </div>
+        <div class="modal-footer">
+            
+        </div>
+      </div>
+      
+    </div>
+  </div>
+                             <% end %>
+                        <% end %>
+                        </table>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="service-box">
-                        <i class="fa fa-4x fa-paper-plane text-primary sr-icons"></i>
-                        <h3>비행기 졸라 잘접어</h3>
-                        <p class="text-muted">아 그리고 나 비행기도 타봤어! 비행기 졸잼. 비행기 졸라 빨라. 그리고 기내식 짱</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="service-box">
-                        <i class="fa fa-4x fa-newspaper-o text-primary sr-icons"></i>
-                        <h3>종이도 잘접어</h3>
-                        <p class="text-muted">신문지 잘접음. 반으로 뚝딱. 근데 신문 잘 안읽어 멍멍</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 text-center">
-                    <div class="service-box">
-                        <i class="fa fa-4x fa-heart text-primary sr-icons"></i>
-                        <h3>심장 졸라 튼튼함</h3>
-                        <p class="text-muted">아이콘때문에 괜히 설렜다면 미안하지만, 이건 내 심폐지구력을 나타내는 아이콘이다 임마</p>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </section>
